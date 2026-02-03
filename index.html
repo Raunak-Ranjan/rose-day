@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rose Day</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= RESET ================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+
+/* ================= BODY ================= */
+body{
+min-height:100vh;
+background:radial-gradient(circle at top,#2b0008,#050005);
+overflow-x:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+/* ================= ROSE RAIN ================= */
+.rose{
+position:fixed;
+font-size:22px;
+opacity:0.6;
+animation:fall 14s linear infinite;
+pointer-events:none;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);}
+100%{transform:translateY(120vh);}
+}
+
+/* ================= CONTAINER ================= */
+.container{width:100%;max-width:420px;}
+
+/* ================= CARD ================= */
+.box{
+background:rgba(255,0,60,0.18);
+backdrop-filter:blur(16px);
+padding:38px 26px;
+border-radius:24px;
+text-align:center;
+color:white;
+box-shadow:0 0 45px rgba(255,0,80,0.6);
+}
+
+/* ================= BIG ROSE ================= */
+.big-rose{
+font-size:78px;
+animation:pulse 2.2s ease-in-out infinite;
+text-shadow:0 0 22px rgba(255,0,0,0.8);
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.18);}
+}
+
+/* ================= PHOTO ================= */
+.love-pic{
+width:140px;
+height:140px;
+object-fit:cover;
+border-radius:50%;
+margin:16px auto 10px;
+display:block;
+border:4px solid #ff4d6d;
+box-shadow:0 0 15px #ff4d6d,0 0 30px rgba(255,0,80,0.6);
+animation:fadePic 1.5s ease, pulse 2.8s infinite;
+cursor:pointer;
+}
+
+@keyframes fadePic{
+from{opacity:0;transform:scale(0.8);}
+to{opacity:1;transform:scale(1);}
+}
+
+/* ================= TEXT ================= */
+h1{
+font-family:'Pacifico',cursive;
+font-size:34px;
+margin-top:8px;
+color:#ffc2d1;
+text-shadow:0 0 14px rgba(255,0,0,0.8);
+}
+
+p{margin-top:10px;font-size:15px;color:#ffe1ea;}
+
+/* ================= INPUT ================= */
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:25px;
+margin-top:16px;
+outline:none;
+text-align:center;
+font-size:15px;
+background:#33000a;
+color:white;
+}
+
+/* ================= BUTTON ================= */
+button{
+margin-top:18px;
+width:100%;
+padding:13px;
+border:none;
+border-radius:26px;
+background:#ff0033;
+color:white;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 0 18px rgba(255,0,60,0.7);
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 28px rgba(255,0,80,0.9);
+}
+
+/* ================= TYPING ================= */
+#typing{
+margin-top:18px;
+min-height:30px;
+font-size:16px;
+color:#ffd6ff;
+text-shadow:0 0 8px pink;
+}
+
+/* ================= SECRET ================= */
+.secret-box{display:none;margin-top:18px;}
+
+/* ================= SHAKE ================= */
+.shake{animation:shake 0.4s ease;}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-4px);}
+50%{transform:translateX(4px);}
+75%{transform:translateX(-4px);}
+100%{transform:translateX(0);}
+}
+
+/* ================= ICON BUTTONS ================= */
+.icon-btn{
+background:rgba(255,0,80,0.25);
+backdrop-filter:blur(8px);
+color:white;
+border:none;
+border-radius:50%;
+width:36px;
+height:36px;
+font-size:18px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 0 10px rgba(255,0,80,0.5);
+transition:0.3s;
+animation:floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
+}
+
+.music-btn{
+position:fixed;
+top:20px;
+left:20px;
+z-index:10;
+}
+
+.share-btn{
+position:fixed;
+top:20px;
+right:20px;
+z-index:10;
+}
+
+.hide{
+opacity:0;
+pointer-events:none;
+}
+
+/* ================= VOLUME SLIDER ================= */
+.volume-wrap{
+position:fixed;
+top:65px;
+left:20px;
+width:120px;
+opacity:0.85;
+}
+
+.volume-wrap input{
+width:100%;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="bgm" loop autoplay>
+<source src="music/romantic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ICONS -->
+<button class="icon-btn music-btn" id="musicBtn" onclick="toggleMusic()">🔊</button>
+<button class="icon-btn share-btn" id="shareBtn" onclick="sharePage()">📤</button>
+
+<!-- VOLUME -->
+<div class="volume-wrap">
+<input type="range" min="0" max="1" step="0.01" value="0.75" id="volumeSlider">
+</div>
+
+<!-- ROSE RAIN -->
+<script>
+for(let i=0;i<35;i++){
+let r=document.createElement("div");
+r.className="rose";
+r.innerHTML="🌹";
+r.style.left=Math.random()*100+"%";
+r.style.animationDelay=Math.random()*14+"s";
+document.body.appendChild(r);
+}
+</script>
+
+<div class="container">
+<div class="box" id="box">
+
+<div class="big-rose">🌹</div>
+
+<img src="images/smoochy.jpg" class="love-pic" onclick="roseBurst()">
+
+<h1>Happy Rose Day</h1>
+<p>You are the rose that colors my world 🌹</p>
+
+<input id="nameInput" value="smoochy">
+
+<button onclick="startRoseMagic()">Bloom Love</button>
+
+<div id="typing"></div>
+
+<div class="secret-box" id="secretBox">
+<input id="passInput" placeholder="Rose Password">
+<button onclick="checkPassword()">Unlock Rose Heart</button>
+<div id="secretMsg"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+let audio=document.getElementById("bgm");
+let musicBtn=document.getElementById("musicBtn");
+let slider=document.getElementById("volumeSlider");
+let playing=true;
+
+audio.volume=0.75;
+
+/* Crossfade Pause / Play */
+function fadeOut(){
+let v=audio.volume;
+let f=setInterval(()=>{
+if(v>0){
+v-=0.05;
+audio.volume=Math.max(v,0);
+}else{
+audio.pause();
+clearInterval(f);
+}
+},50);
+}
+
+function fadeIn(){
+audio.play();
+let v=0;
+let f=setInterval(()=>{
+if(v<slider.value){
+v+=0.05;
+audio.volume=Math.min(v,slider.value);
+}else{
+clearInterval(f);
+}
+},50);
+}
+
+function toggleMusic(){
+if(playing){
+fadeOut();
+musicBtn.innerHTML="🔇";
+}else{
+fadeIn();
+musicBtn.innerHTML="🔊";
+}
+playing=!playing;
+}
+
+/* Slider */
+slider.oninput=()=>{
+audio.volume=slider.value;
+};
+
+/* SHARE */
+function sharePage(){
+if(navigator.share){
+navigator.share({
+title:"Rose Day Surprise 🌹",
+text:"Someone made something special for you 🤍",
+url:location.href
+});
+}else{
+navigator.clipboard.writeText(location.href);
+alert("Link copied!");
+}
+}
+
+/* TYPING */
+let i=0;
+let finalMsg="";
+
+function startRoseMagic(){
+let name=document.getElementById("nameInput").value || "My Rose";
+finalMsg=`${name}, you are my only rose, my endless garden, my forever bloom 🌹`;
+document.getElementById("typing").innerHTML="";
+i=0;
+typeWriter();
+document.getElementById("secretBox").style.display="block";
+softShake();
+roseBurst();
+}
+
+function typeWriter(){
+if(i<finalMsg.length){
+document.getElementById("typing").innerHTML+=finalMsg.charAt(i);
+i++;
+setTimeout(typeWriter,70);
+}
+}
+
+/* PASSWORD */
+function checkPassword(){
+let p=document.getElementById("passInput").value;
+if(p==="sona"){
+document.getElementById("secretMsg").innerHTML="🌹 My heart is your rose garden forever 🤍";
+roseBurst();
+}else{
+softShake();
+document.getElementById("secretMsg").innerHTML="Wrong rose password 🥀";
+}
+}
+
+/* SHAKE */
+function softShake(){
+let b=document.getElementById("box");
+b.classList.add("shake");
+setTimeout(()=>b.classList.remove("shake"),400);
+}
+
+/* ROSE BURST */
+function roseBurst(){
+for(let i=0;i<18;i++){
+let r=document.createElement("div");
+r.innerHTML="🌹";
+r.style.position="fixed";
+r.style.left="50%";
+r.style.top="50%";
+r.style.fontSize="22px";
+document.body.appendChild(r);
+
+let x=(Math.random()-0.5)*220;
+let y=(Math.random()-0.5)*220;
+
+r.animate([
+{transform:"translate(0,0)",opacity:1},
+{transform:`translate(${x}px,${y}px)`,opacity:0}
+],{duration:1100,easing:"ease-out"});
+
+setTimeout(()=>r.remove(),1100);
+}
+}
+
+/* HIDE ICONS ON SCROLL */
+let lastScroll=0;
+window.addEventListener("scroll",()=>{
+let cur=window.scrollY;
+if(cur>lastScroll){
+musicBtn.classList.add("hide");
+shareBtn.classList.add("hide");
+}else{
+musicBtn.classList.remove("hide");
+shareBtn.classList.remove("hide");
+}
+lastScroll=cur;
+});
+
+</script>
+
+</body>
+</html>
